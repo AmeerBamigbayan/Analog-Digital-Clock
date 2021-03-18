@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Analog Clock</title>
+        <meta charset="utf-8"></meta>
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+    </head>
+    
+    <body onload="newTime()">
+        <span id="c">Analog/Digital Clock</span>
+        <div class="h3">
+        <h3>Developer: Ameer Bamigbayan </h3>
+      </div>
+        <div id="clock" onclick="changeType()">
+            <span id="text"></span>
+            <div id="hrs"></div>
+            <div id="min"></div>
+            <div id="sec"></div>
+        </div>
+    </body>
+</html>
+
+<style>
+
+body {
+    margin: 0;
+    background-color: #301249;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    margin-top: 100px;
+}
+
+#c {
+    font-weight: bold;
+    background-color: #7633ad;
+    padding: 5px 10px;
+    color: #fff;
+}
+
+#clock {
+    
+    height: 100pt;
+    width: 100pt;
+    
+    background: #101317;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50pt;
+    
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -o-transform: translateX(-50%) translateY(-50%);
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    box-sizing: border-box;
+    border: 3px double #fff;
+    text-align: center;
+    font-weight: bold;
+
+}
+
+h3{
+      color: #fff;
+}
+
+#text {
+    
+    color: rgb(255, 255, 255);
+
+}
+
+#sec, #min, #hrs{
+
+    transition: transform-origin 0.5s ease-out;
+    position: absolute;
+    background-color: none;
+    top: 50%;
+    left: 50%;
+    border-left:0 !important;
+}
+
+
+
+#min {
+   
+    border-color: #f3d !important;
+}
+
+#sec {
+   
+    border-color: #fea !important;
+}
+
+#hrs {
+
+    font-size: 2em;
+    color: #dde;
+
+}
+</style>
+
+<script>
+      
+
+var
+   lineH, tOrigin, mH, hH, sH, br, ht, mt, st
+    type = 0,
+       t = -90,
+ vendors = [
+     
+     "msTransform",
+     "webkitTransform",
+     "mozTransform",
+     "oTransform",
+     "transform"
+     
+ ];
+ alert("Click on clock to switch to Digital Version")
+function newTime() {
+
+    var 
+    
+    newDate = new Date(),
+    newHour = newDate.getHours(),
+    newMins = newDate.getMinutes(),
+    newSecs = newDate.getSeconds(),
+    
+    secArr = document.querySelector("#sec"),
+    minArr = document.querySelector("#min"),
+    hrsArr = document.querySelector("#hrs"),
+        cl = document.querySelector("#text"),
+    
+    degSec = newSecs * 6,
+    degMin = newMins * 6 + degSec/60,
+    degHrs = newHour * 30 + degMin/12;
+    
+    if ( newHour > 12 )
+        
+        newHour -= 12;
+        
+    if ( degHrs > 360 ) 
+        
+        degHrs -= 360;
+        
+    newHour = fix( newHour );
+    newMins = fix( newMins );
+    newSecs = fix( newSecs );
+  
+    cl.innerText = newHour+' : '+newMins+' : '+newSecs;
+    
+    _transform( secArr, degSec );
+    _transform( minArr, degMin );
+    _transform( hrsArr, degHrs );
+    
+    change();
+    
+}
+
+setInterval( newTime, 100 );
+
+function changeType(){
+        
+    type = ( type == 0 ) ? 1 : 0;
+    
+}
+    
+function fix ( param ) {
+    
+    if ( param < 10 )
+    
+        param = "0" + param;
+    
+    return param;
+    
+}
+
+function _transform ( param, deg ) {
+    
+    t = ( type == 0 ) ? -50 : -90;
+    
+    var
+    se = 'translate(-50%,'+t+'%) rotate('+deg+'deg)';
+    
+    for ( e = 0; e < 5; e++ )
+
+        param.style[vendors[e]] = se
+        
+}
+
+function change(){
+   
+    var
+    secArr = document.querySelector("#sec"),
+    minArr = document.querySelector("#min"),
+    hrsArr = document.querySelector("#hrs"),
+        cl = document.querySelector("#text");
+    
+    
+    if ( type === 0 ) {
+        
+        lineH = "100pt";
+        tOrigin = "50% 50%";
+        mH = "140pt";
+        hH = "130pt";
+        sH = "170pt";
+        br = "0 none";
+        ht = ".";
+        mt = '"';
+        st = "'";
+    }
+    
+    else {
+        
+        lineH = "230pt";
+        tOrigin = "50% 90%";
+        mH = "40pt";
+        hH = "30pt";
+        sH = "47pt";
+        br = "1px solid grey";
+        ht = mt = st = null;
+    };
+    
+    hrsArr.innerText = ht
+    minArr.innerText = mt
+    secArr.innerText = st
+    
+    cl.style.lineHeight = lineH;
+    minArr.style.height = mH;
+    secArr.style.height = sH;
+    hrsArr.style.height = hH;
+    minArr.style.border = br;
+    secArr.style.border = br;
+    hrsArr.style.border = br;
+    minArr.style.transformOrigin = tOrigin;
+    secArr.style.transformOrigin = tOrigin;
+    hrsArr.style.transformOrigin = tOrigin;
+    
+}
+</script>
+      </body>
+ </html>
